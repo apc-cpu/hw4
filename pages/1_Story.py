@@ -13,7 +13,7 @@ with more graphics and greater opportunity for interactivity on the explore page
 
 
 st.header("Who improved the most?")
-st.altair_chart(chart_team_points(team_summary), width = 250)
+st.altair_chart(chart_team_points(team_summary), height = 300, width = 250)
 
 st.header("Which teams dominated offensively?")
 st.altair_chart(chart_goal_difference(team_summary))
