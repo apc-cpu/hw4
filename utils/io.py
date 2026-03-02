@@ -3,6 +3,7 @@ import streamlit as st
 
 @st.cache_data
 def load_data():
+    print(">>> USING CORRECT load_data() <<<")
     pl23_24 = pd.read_csv("data/PL-season-2324.csv")
     pl24_25 = pd.read_csv("data/PL-season-2425.csv")
 
