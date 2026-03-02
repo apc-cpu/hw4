@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.io import load_data
 from charts.charts import chart_team_points, chart_goal_difference, chart_season_average_points
 
 st.title("Premier League: Two Seasons in Review")
