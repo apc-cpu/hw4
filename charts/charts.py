@@ -42,7 +42,7 @@ def chart_team_points(team_summary):
                 "league_position:Q"
             ]
         )
-        .properties(width="stretch", height=500, title="Team Performance by Season")
+        .properties(width=450, height=500, title="Team Performance by Season")
     )
 
     return chart
@@ -84,7 +84,7 @@ def chart_goal_difference(team_summary):
             color=alt.condition(team_select, "team:N", alt.value("lightgray")),
             tooltip=["team:N", "goal_difference:Q"]
         )
-        .properties(width="stretch", height=500, title="Goal Difference by Team")
+        .properties(width=500, height=500, title="Goal Difference by Team")
     )
 
     return chart
@@ -143,7 +143,7 @@ def chart_rolling(team_matches):
                 alt.Tooltip("metric_value:Q", title="Rolling Avg")
             ]
         )
-        .properties(width="stretch", height=400, title="Rolling Attacking Performance Over Time")
+        .properties(width=800, height=400, title="Rolling Attacking Performance Over Time")
     )
 
     return chart
@@ -188,7 +188,7 @@ def chart_homeaway(homeaway_summary):
             opacity=alt.condition(homeaway_brush, alt.value(1), alt.value(0.3)),
             tooltip=["team:N", "Season:N", "is_home:N", "total_points:Q"]
         )
-        .properties(width="stretch", height=400, title="Home vs Away Performance")
+        .properties(width=700, height=400, title="Home vs Away Performance")
     )
 
     return chart
