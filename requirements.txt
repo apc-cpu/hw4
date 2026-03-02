@@ -1,3 +1,5 @@
 streamlit
 pandas
-altair
+altair>=5.0.0
+vegafusion
+vegafusion-python-embed
