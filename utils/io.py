@@ -27,7 +27,8 @@ def load_data():
 
     home = home.drop(columns=[
         "HomeTeam","AwayTeam","Referee","FTHG","FTAG","HS","AS","HST","AST",
-        "HC","AC","HF","AF","HY","AY","HR","AR"])
+        "HC","AC","HF","AF","HY","AY","HR","AR"
+    ])
 
     away = combined.copy()
     away["team"] = away["AwayTeam"]
@@ -45,7 +46,8 @@ def load_data():
 
     away = away.drop(columns=[
         "HomeTeam","AwayTeam","Referee","FTHG","FTAG","HS","AS","HST","AST",
-        "HC","AC","HF","AF","HY","AY","HR","AR"])
+        "HC","AC","HF","AF","HY","AY","HR","AR"
+    ])
 
     team_matches = pd.concat([home, away], ignore_index=True)
 
@@ -62,13 +64,13 @@ def load_data():
     team_matches = team_matches.sort_values(["Season", "Date"])
     team_matches["matchweek"] = team_matches.groupby(["Season", "team"]).cumcount() + 1
 
-
     metrics = ["goals_for", "shots", "shots_on_target", "corners"]
     for m in metrics:
         team_matches[f"{m}_roll"] = (
             team_matches.groupby(["Season", "team"])[m]
             .rolling(window=3, min_periods=1).mean()
-            .reset_index(level=[0,1], drop=True))
+            .reset_index(level=[0,1], drop=True)
+        )
 
     team_summary = (
         team_matches.groupby(["Season", "team"], as_index=False)
@@ -81,19 +83,30 @@ def load_data():
             total_corners=("corners","sum"),
             total_fouls=("fouls","sum"),
             total_yellow=("yellow","sum"),
-            total_red=("red","sum")))
+            total_red=("red","sum")
+        )
+    )
 
-    team_summary["goal_difference"] = (team_summary["total_goals_for"] - team_summary["total_goals_against"])
+    team_summary["goal_difference"] = (
+        team_summary["total_goals_for"] - team_summary["total_goals_against"]
+    )
 
-    team_summary = (team_summary.sort_values(["Season","total_points"], ascending=[True,False]).assign(
+    team_summary = (
+        team_summary.sort_values(["Season","total_points"], ascending=[True,False])
+        .assign(
             league_position=lambda df: df.groupby("Season")["total_points"]
-            .rank(method="first", ascending=False).astype(int)))
+            .rank(method="first", ascending=False).astype(int)
+        )
+    )
 
     homeaway_summary = (
         team_matches.groupby(["Season","team","is_home"])
-        .agg(total_points=("points","sum"),
-             total_goals_for=("goals_for","sum"),
-             total_goals_against=("goals_against","sum"))
-        .reset_index())
+        .agg(
+            total_points=("points","sum"),
+            total_goals_for=("goals_for","sum"),
+            total_goals_against=("goals_against","sum")
+        )
+        .reset_index()
+    )
 
     return team_matches, team_summary, homeaway_summary
