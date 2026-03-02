@@ -12,8 +12,8 @@ st.title("Explore the Premier League Data")
 team_matches, team_summary, homeaway_summary = load_data()
 
 
-st.header("""How did teams perform across the two seasons?")
-st.write("This view compares total points across the 2023–24 and 2024–25 seasons. 
+st.header("How did teams perform across the two seasons?")
+st.write("""This view compares total points across the 2023–24 and 2024–25 seasons. 
 Some clubs show remarkable stability, while others swing dramatically from one 
 season to the next.
 
