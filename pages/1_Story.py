@@ -8,6 +8,6 @@ team_matches, team_summary, homeaway_summary = load_data()
 
 
 st.subheader("Quick context")
-st.caption("A small static summary chart comparing overall average points by season.")
+st.caption("A quick and small static summary chart comparing overall average points by season, before more interactive graphs in the explore section.")
 st.altair_chart(chart_season_average_points(team_summary), width="content")
 
