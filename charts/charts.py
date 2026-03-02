@@ -202,14 +202,33 @@ def chart_homeaway(homeaway_summary):
             y=alt.Y("total_points:Q", title="Total Points"),
             color=alt.Color("is_home:N", title="Home/Away"),
             opacity=alt.condition(Brush_HA, alt.value(1), alt.value(0.3)),
-            tooltip=[
-                "team:N",
-                "Season:N",
-                "is_home:N",
-                "total_points:Q"
-            ]
+            tooltip=["team:N", "Season:N", "is_home:N", "total_points:Q"]
         )
         .properties(width=700, height=400, title="Home vs Away Performance")
+    )
+
+    return chart
+
+
+def chart_season_average_points(team_summary):
+    season_avg = (
+        team_summary.groupby("Season", as_index=False)["total_points"]
+        .mean()
+        .rename(columns={"total_points": "avg_points"})
+    )
+
+    chart = (
+        alt.Chart(season_avg)
+        .mark_bar(size=70, color="#4C78A8")
+        .encode(
+            x=alt.X("Season:N", title="Season"),
+            y=alt.Y("avg_points:Q", title="Average Team Points"),
+            tooltip=[
+                alt.Tooltip("Season:N"),
+                alt.Tooltip("avg_points:Q", title="Average Points", format=".1f")
+            ]
+        )
+        .properties(width=320, height=220, title="Average Points per Team by Season")
     )
 
     return chart
