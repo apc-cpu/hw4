@@ -26,6 +26,9 @@ def chart_team_points(team_summary):
 
     chart = (
         alt.Chart(team_summary)
+        .add_params(season_param, team_select, team_filter_param)
+        .transform_filter("datum.Season == Season")
+        .transform_filter(team_filter_logic)
         .mark_circle(size=200)
         .encode(
             x=alt.X("total_points:Q", title="Total Points"),
@@ -39,10 +42,7 @@ def chart_team_points(team_summary):
                 "league_position:Q"
             ]
         )
-        .add_params(season_param, team_select, team_filter_param)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
-        .properties(width=400, height=500, title="Team Performance by Season")
+        .properties(width="stretch", height=500, title="Team Performance by Season")
     )
 
     return chart
@@ -74,6 +74,9 @@ def chart_goal_difference(team_summary):
 
     chart = (
         alt.Chart(team_summary)
+        .add_params(season_param, team_select, team_filter_param)
+        .transform_filter("datum.Season == Season")
+        .transform_filter(team_filter_logic)
         .mark_bar()
         .encode(
             x=alt.X("goal_difference:Q", title="Goal Difference"),
@@ -81,10 +84,7 @@ def chart_goal_difference(team_summary):
             color=alt.condition(team_select, "team:N", alt.value("lightgray")),
             tooltip=["team:N", "goal_difference:Q"]
         )
-        .add_params(team_select, season_param, team_filter_param)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
-        .properties(width=500, height=500, title="Goal Difference by Team")
+        .properties(width="stretch", height=500, title="Goal Difference by Team")
     )
 
     return chart
@@ -127,7 +127,7 @@ def chart_rolling(team_matches):
 
     chart = (
         alt.Chart(team_matches)
-        .add_params(team_select, season_param, metric_param, team_filter_param)
+        .add_params(season_param, metric_param, team_select, team_filter_param)
         .transform_filter("datum.Season == Season")
         .transform_filter(team_filter_logic)
         .transform_calculate(metric_value=f"datum[{metric_param.name}]")
@@ -143,7 +143,7 @@ def chart_rolling(team_matches):
                 alt.Tooltip("metric_value:Q", title="Rolling Avg")
             ]
         )
-        .properties(width=800, height=400, title="Rolling Attacking Performance Over Time")
+        .properties(width="stretch", height=400, title="Rolling Attacking Performance Over Time")
     )
 
     return chart
@@ -177,7 +177,7 @@ def chart_homeaway(homeaway_summary):
 
     chart = (
         alt.Chart(homeaway_summary)
-        .add_params(team_select, team_filter_param, season_param, homeaway_brush)
+        .add_params(season_param, team_select, team_filter_param, homeaway_brush)
         .transform_filter("datum.Season == Season")
         .transform_filter(team_filter_logic)
         .mark_bar()
@@ -188,7 +188,7 @@ def chart_homeaway(homeaway_summary):
             opacity=alt.condition(homeaway_brush, alt.value(1), alt.value(0.3)),
             tooltip=["team:N", "Season:N", "is_home:N", "total_points:Q"]
         )
-        .properties(width=700, height=400, title="Home vs Away Performance")
+        .properties(width="stretch", height=400, title="Home vs Away Performance")
     )
 
     return chart
