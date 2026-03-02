@@ -49,9 +49,19 @@ def load_data():
 
     team_matches = pd.concat([home, away], ignore_index=True)
 
-    team_matches["Date"] = pd.to_datetime(team_matches["Date"], dayfirst=True)
-    team_matches = team_matches.sort_values(["Season", "Date"])
-    team_matches["matchweek"] = team_matches.groupby(["Season", "team"]).cumcount() + 1
+team_matches["Date"] = team_matches["Date"].astype(str).str.strip()
+team_matches["Date"] = team_matches["Date"].str.replace("-", "/", regex=False)
+
+team_matches["Date"] = pd.to_datetime(
+    team_matches["Date"],
+    format="%d/%m/%y",
+    errors="coerce"
+)
+
+team_matches = team_matches.dropna(subset=["Date"])
+team_matches = team_matches.sort_values(["Season", "Date"])
+team_matches["matchweek"] = team_matches.groupby(["Season", "team"]).cumcount() + 1
+
 
     metrics = ["goals_for", "shots", "shots_on_target", "corners"]
     for m in metrics:
