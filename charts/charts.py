@@ -1,49 +1,30 @@
 import altair as alt
 
-team_select = alt.selection_point(fields=["team"], name="TeamSelect", toggle=False)
-
-season_param = alt.param(
-    name="Season",
-    bind=alt.binding_select(options=[]),
-)
-
-metric_param = alt.param(
-    name="Metric",
-    bind=alt.binding_select(options=[
-        "goals_for_roll",
-        "shots_roll",
-        "shots_on_target_roll",
-        "corners_roll"
-    ]),
-    value="goals_for_roll"
-)
-
-team_filter_param = alt.param(
-    name="TeamFilter",
-    bind=alt.binding_select(options=["All"]),
-    value="All"
-)
-
-homeaway_brush = alt.selection_interval(
-    name="HomeAwayBrush",
-    encodings=["x", "y"]
-)
-
-team_filter_logic = (
-    "(TeamFilter != 'All') ? datum.team == TeamFilter : "
-    "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
-    "true"
-)
-
 def chart_team_points(team_summary):
     seasons = sorted(team_summary["Season"].unique())
-    season_param.bind.options = seasons
-    season_param.value = seasons[0]
-
     teams = sorted(team_summary["team"].unique())
-    team_filter_param.bind.options = ["All"] + teams
 
-    dot = (
+    season_param = alt.param(
+        name="Season",
+        bind=alt.binding_select(options=seasons),
+        value=seasons[0]
+    )
+
+    team_select = alt.selection_point(fields=["team"], toggle=False)
+
+    team_filter_param = alt.param(
+        name="TeamFilter",
+        bind=alt.binding_select(options=["All"] + teams),
+        value="All"
+    )
+
+    team_filter_logic = (
+        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
+        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+        "true"
+    )
+
+    chart = (
         alt.Chart(team_summary)
         .mark_circle(size=200)
         .encode(
@@ -63,17 +44,35 @@ def chart_team_points(team_summary):
         .transform_filter(team_filter_logic)
         .properties(width=400, height=500, title="Team Performance by Season")
     )
-    return dot
+
+    return chart
+
 
 def chart_goal_difference(team_summary):
     seasons = sorted(team_summary["Season"].unique())
-    season_param.bind.options = seasons
-    season_param.value = seasons[0]
-
     teams = sorted(team_summary["team"].unique())
-    team_filter_param.bind.options = ["All"] + teams
 
-    bar = (
+    season_param = alt.param(
+        name="Season",
+        bind=alt.binding_select(options=seasons),
+        value=seasons[0]
+    )
+
+    team_select = alt.selection_point(fields=["team"], toggle=False)
+
+    team_filter_param = alt.param(
+        name="TeamFilter",
+        bind=alt.binding_select(options=["All"] + teams),
+        value="All"
+    )
+
+    team_filter_logic = (
+        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
+        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+        "true"
+    )
+
+    chart = (
         alt.Chart(team_summary)
         .mark_bar()
         .encode(
@@ -87,17 +86,46 @@ def chart_goal_difference(team_summary):
         .transform_filter(team_filter_logic)
         .properties(width=500, height=500, title="Goal Difference by Team")
     )
-    return bar
+
+    return chart
+
 
 def chart_rolling(team_matches):
     seasons = sorted(team_matches["Season"].unique())
-    season_param.bind.options = seasons
-    season_param.value = seasons[0]
-
     teams = sorted(team_matches["team"].unique())
-    team_filter_param.bind.options = ["All"] + teams
 
-    rolling_chart = (
+    season_param = alt.param(
+        name="Season",
+        bind=alt.binding_select(options=seasons),
+        value=seasons[0]
+    )
+
+    metric_param = alt.param(
+        name="Metric",
+        bind=alt.binding_select(options=[
+            "goals_for_roll",
+            "shots_roll",
+            "shots_on_target_roll",
+            "corners_roll"
+        ]),
+        value="goals_for_roll"
+    )
+
+    team_select = alt.selection_point(fields=["team"], toggle=False)
+
+    team_filter_param = alt.param(
+        name="TeamFilter",
+        bind=alt.binding_select(options=["All"] + teams),
+        value="All"
+    )
+
+    team_filter_logic = (
+        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
+        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+        "true"
+    )
+
+    chart = (
         alt.Chart(team_matches)
         .add_params(team_select, season_param, metric_param, team_filter_param)
         .transform_filter("datum.Season == Season")
@@ -117,17 +145,37 @@ def chart_rolling(team_matches):
         )
         .properties(width=800, height=400, title="Rolling Attacking Performance Over Time")
     )
-    return rolling_chart
+
+    return chart
+
 
 def chart_homeaway(homeaway_summary):
     seasons = sorted(homeaway_summary["Season"].unique())
-    season_param.bind.options = seasons
-    season_param.value = seasons[0]
-
     teams = sorted(homeaway_summary["team"].unique())
-    team_filter_param.bind.options = ["All"] + teams
 
-    homeaway_chart = (
+    season_param = alt.param(
+        name="Season",
+        bind=alt.binding_select(options=seasons),
+        value=seasons[0]
+    )
+
+    team_select = alt.selection_point(fields=["team"], toggle=False)
+
+    team_filter_param = alt.param(
+        name="TeamFilter",
+        bind=alt.binding_select(options=["All"] + teams),
+        value="All"
+    )
+
+    homeaway_brush = alt.selection_interval(encodings=["x", "y"])
+
+    team_filter_logic = (
+        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
+        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+        "true"
+    )
+
+    chart = (
         alt.Chart(homeaway_summary)
         .add_params(team_select, team_filter_param, season_param, homeaway_brush)
         .transform_filter("datum.Season == Season")
@@ -142,4 +190,5 @@ def chart_homeaway(homeaway_summary):
         )
         .properties(width=700, height=400, title="Home vs Away Performance")
     )
-    return homeaway_chart
+
+    return chart
