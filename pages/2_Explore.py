@@ -57,7 +57,7 @@ st.altair_chart(chart_rolling(team_matches))
 st.header("Does home advantage still matter?")
 st.write("""Home advantage's impact varies widely across clubs.
 
-Teams like Liverpool and Newcastle tend to be significantly stronger at home, earning a large share of their points at their own stadiums. Meanwhile, clubs such 
-as Brighton or West Ham often travel surprisingly well, showing good form when playing away.""")
+Teams like Fulham tend to be significantly stronger at home, earning a large share of their points at their own stadiums. Meanwhile, clubs such 
+as Burnley or Nottingham Forest often travel surprisingly well, showing good form when playing away.""")
 
 st.altair_chart(chart_homeaway(homeaway_summary))
