@@ -1,6 +1,4 @@
-import streamlit as st
-from utils.io import load_data
-from charts.charts import chart_team_points, chart_goal_difference
+from charts.charts import chart_team_points, chart_goal_difference, chart_season_average_points
 
 st.title("Premier League: Two Seasons in Review")
 
@@ -12,8 +10,8 @@ story has unfolded over the last two Premier League seasons. I provide a brief o
 with more graphics and greater opportunity for interactivity on the explore page.""")
 
 
-st.header("Who improved the most?")
-st.altair_chart(chart_team_points(team_summary), height = 300, width = 250)
 
-st.header("Which teams dominated offensively?")
-st.altair_chart(chart_goal_difference(team_summary))
+st.subheader("Quick context")
+st.caption("A small static summary chart comparing overall average points by season.")
+st.altair_chart(chart_season_average_points(team_summary), width="content")
+
