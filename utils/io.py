@@ -49,7 +49,7 @@ def load_data():
 
     team_matches = pd.concat([home, away], ignore_index=True)
 
-    team_matches["Date"] = pd.to_datetime(team_matches["Date"])
+    team_matches["Date"] = pd.to_datetime(team_matches["Date"], dayfirst=True)
     team_matches = team_matches.sort_values(["Season", "Date"])
     team_matches["matchweek"] = team_matches.groupby(["Season", "team"]).cumcount() + 1
 
