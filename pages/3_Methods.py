@@ -14,7 +14,7 @@ goals for, goals against, shots, fouls, and points earned.""")
 st.header("Summary Tables")
 st.write("""From the cleaned match-level dataset, two summary tables were created:
 
-- team_summary total points, goals, shots, cards, and league position  
-- homeaway_summary home vs away performance for each team  
+- team_summary: total points, goals, shots, cards, and league position  
+- homeaway_summary: home vs away performance for each team  
 
 These tables power the visualizations in the Story and Explore pages.""")
