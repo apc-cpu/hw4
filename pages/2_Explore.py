@@ -7,15 +7,17 @@ from charts.charts import (
     chart_homeaway
 )
 
+
+st.title("Explore the Premier League Data")
+
+team_matches, team_summary, homeaway_summary = load_data()
+
+
 st.write("Loaded team_matches:", type(team_matches))
 st.write("Loaded team_summary:", type(team_summary))
 st.write("Loaded homeaway_summary:", type(homeaway_summary))
 
 
-
-st.title("Explore the Premier League Data")
-
-team_matches, team_summary, homeaway_summary = load_data()
 
 st.header("How did teams perform across the two seasons?")
 st.write("""This view compares total points across the 2023–24 and 2024–25 seasons. 
