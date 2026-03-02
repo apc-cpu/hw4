@@ -4,36 +4,36 @@ def chart_team_points(team_summary):
     seasons = sorted(team_summary["Season"].unique())
     teams = sorted(team_summary["team"].unique())
 
-    season_param = alt.param(
-        name="Season",
+    Season_TP = alt.param(
+        name="Season_TP",
         bind=alt.binding_select(options=seasons),
         value=seasons[0]
     )
 
-    team_select = alt.selection_point(fields=["team"], toggle=False)
+    TeamSelect_TP = alt.selection_point(fields=["team"], toggle=False)
 
-    team_filter_param = alt.param(
-        name="TeamFilter",
+    TeamFilter_TP = alt.param(
+        name="TeamFilter_TP",
         bind=alt.binding_select(options=["All"] + teams),
         value="All"
     )
 
-    team_filter_logic = (
-        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
-        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+    logic = (
+        "(TeamFilter_TP != 'All') ? datum.team == TeamFilter_TP : "
+        "(TeamSelect_TP != null && TeamSelect_TP.team != null) ? datum.team == TeamSelect_TP.team : "
         "true"
     )
 
     chart = (
         alt.Chart(team_summary)
-        .add_params(season_param, team_select, team_filter_param)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
+        .add_params(Season_TP, TeamSelect_TP, TeamFilter_TP)
+        .transform_filter("datum.Season == Season_TP")
+        .transform_filter(logic)
         .mark_circle(size=200)
         .encode(
             x=alt.X("total_points:Q", title="Total Points"),
             y=alt.Y("team:N", sort="-x", title="Team"),
-            color=alt.condition(team_select, "team:N", alt.value("lightgray")),
+            color=alt.condition(TeamSelect_TP, "team:N", alt.value("lightgray")),
             tooltip=[
                 "team:N",
                 "Season:N",
@@ -52,36 +52,36 @@ def chart_goal_difference(team_summary):
     seasons = sorted(team_summary["Season"].unique())
     teams = sorted(team_summary["team"].unique())
 
-    season_param = alt.param(
-        name="Season",
+    Season_GD = alt.param(
+        name="Season_GD",
         bind=alt.binding_select(options=seasons),
         value=seasons[0]
     )
 
-    team_select = alt.selection_point(fields=["team"], toggle=False)
+    TeamSelect_GD = alt.selection_point(fields=["team"], toggle=False)
 
-    team_filter_param = alt.param(
-        name="TeamFilter",
+    TeamFilter_GD = alt.param(
+        name="TeamFilter_GD",
         bind=alt.binding_select(options=["All"] + teams),
         value="All"
     )
 
-    team_filter_logic = (
-        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
-        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+    logic = (
+        "(TeamFilter_GD != 'All') ? datum.team == TeamFilter_GD : "
+        "(TeamSelect_GD != null && TeamSelect_GD.team != null) ? datum.team == TeamSelect_GD.team : "
         "true"
     )
 
     chart = (
         alt.Chart(team_summary)
-        .add_params(season_param, team_select, team_filter_param)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
+        .add_params(Season_GD, TeamSelect_GD, TeamFilter_GD)
+        .transform_filter("datum.Season == Season_GD")
+        .transform_filter(logic)
         .mark_bar()
         .encode(
             x=alt.X("goal_difference:Q", title="Goal Difference"),
             y=alt.Y("team:N", sort="-x"),
-            color=alt.condition(team_select, "team:N", alt.value("lightgray")),
+            color=alt.condition(TeamSelect_GD, "team:N", alt.value("lightgray")),
             tooltip=["team:N", "goal_difference:Q"]
         )
         .properties(width=500, height=500, title="Goal Difference by Team")
@@ -94,14 +94,14 @@ def chart_rolling(team_matches):
     seasons = sorted(team_matches["Season"].unique())
     teams = sorted(team_matches["team"].unique())
 
-    season_param = alt.param(
-        name="Season",
+    Season_ROLL = alt.param(
+        name="Season_ROLL",
         bind=alt.binding_select(options=seasons),
         value=seasons[0]
     )
 
-    metric_param = alt.param(
-        name="Metric",
+    Metric_ROLL = alt.param(
+        name="Metric_ROLL",
         bind=alt.binding_select(options=[
             "goals_for_roll",
             "shots_roll",
@@ -111,26 +111,26 @@ def chart_rolling(team_matches):
         value="goals_for_roll"
     )
 
-    team_select = alt.selection_point(fields=["team"], toggle=False)
+    TeamSelect_ROLL = alt.selection_point(fields=["team"], toggle=False)
 
-    team_filter_param = alt.param(
-        name="TeamFilter",
+    TeamFilter_ROLL = alt.param(
+        name="TeamFilter_ROLL",
         bind=alt.binding_select(options=["All"] + teams),
         value="All"
     )
 
-    team_filter_logic = (
-        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
-        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+    logic = (
+        "(TeamFilter_ROLL != 'All') ? datum.team == TeamFilter_ROLL : "
+        "(TeamSelect_ROLL != null && TeamSelect_ROLL.team != null) ? datum.team == TeamSelect_ROLL.team : "
         "true"
     )
 
     chart = (
         alt.Chart(team_matches)
-        .add_params(season_param, metric_param, team_select, team_filter_param)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
-        .transform_calculate(metric_value=f"datum[{metric_param.name}]")
+        .add_params(Season_ROLL, Metric_ROLL, TeamSelect_ROLL, TeamFilter_ROLL)
+        .transform_filter("datum.Season == Season_ROLL")
+        .transform_filter(logic)
+        .transform_calculate(metric_value=f"datum[{Metric_ROLL.name}]")
         .mark_line()
         .encode(
             x=alt.X("matchweek:Q", title="Matchweek"),
@@ -153,39 +153,39 @@ def chart_homeaway(homeaway_summary):
     seasons = sorted(homeaway_summary["Season"].unique())
     teams = sorted(homeaway_summary["team"].unique())
 
-    season_param = alt.param(
-        name="Season",
+    Season_HA = alt.param(
+        name="Season_HA",
         bind=alt.binding_select(options=seasons),
         value=seasons[0]
     )
 
-    team_select = alt.selection_point(fields=["team"], toggle=False)
+    TeamSelect_HA = alt.selection_point(fields=["team"], toggle=False)
 
-    team_filter_param = alt.param(
-        name="TeamFilter",
+    TeamFilter_HA = alt.param(
+        name="TeamFilter_HA",
         bind=alt.binding_select(options=["All"] + teams),
         value="All"
     )
 
-    homeaway_brush = alt.selection_interval(encodings=["x", "y"])
+    Brush_HA = alt.selection_interval(encodings=["x", "y"])
 
-    team_filter_logic = (
-        "(TeamFilter != 'All') ? datum.team == TeamFilter : "
-        "(TeamSelect != null && TeamSelect.team != null) ? datum.team == TeamSelect.team : "
+    logic = (
+        "(TeamFilter_HA != 'All') ? datum.team == TeamFilter_HA : "
+        "(TeamSelect_HA != null && TeamSelect_HA.team != null) ? datum.team == TeamSelect_HA.team : "
         "true"
     )
 
     chart = (
         alt.Chart(homeaway_summary)
-        .add_params(season_param, team_select, team_filter_param, homeaway_brush)
-        .transform_filter("datum.Season == Season")
-        .transform_filter(team_filter_logic)
+        .add_params(Season_HA, TeamSelect_HA, TeamFilter_HA, Brush_HA)
+        .transform_filter("datum.Season == Season_HA")
+        .transform_filter(logic)
         .mark_bar()
         .encode(
             x=alt.X("team:N", title="Team"),
             y=alt.Y("total_points:Q", title="Total Points"),
             color=alt.Color("is_home:N", title="Home/Away"),
-            opacity=alt.condition(homeaway_brush, alt.value(1), alt.value(0.3)),
+            opacity=alt.condition(Brush_HA, alt.value(1), alt.value(0.3)),
             tooltip=["team:N", "Season:N", "is_home:N", "total_points:Q"]
         )
         .properties(width=700, height=400, title="Home vs Away Performance")
