@@ -1,6 +1,6 @@
-from utils.io import load_season
+import streamlit as st
 
-season1 = load_season("data/PL-season-2324.csv")
-season2 = load_season("data/PL-season-2425.csv")
-
-df = pd.concat([season1, season2], ignore_index=True)
+st.title("Premier League Narrative Visualization")
+st.write("""This is an interactive data story exploring two seasons of Premier League football.
+Use the sidebar to navigate between the main story, the interactive exploration tools,
+and the methods section describing the data and cleaning process.""")
