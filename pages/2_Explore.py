@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+
 import streamlit as st
 from utils.io import load_data
 from charts.charts import (
