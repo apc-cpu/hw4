@@ -10,10 +10,7 @@ def chart_team_points(team_summary):
         value=seasons[0]
     )
 
-    TeamSelect_TP = alt.param(
-        name="TeamSelect_TP",
-        select=alt.SelectionPoint(fields=["team"], toggle=False)
-    )
+    TeamSelect_TP = alt.selection_point(fields=["team"], toggle=False)
 
     TeamFilter_TP = alt.param(
         name="TeamFilter_TP",
@@ -61,10 +58,7 @@ def chart_goal_difference(team_summary):
         value=seasons[0]
     )
 
-    TeamSelect_GD = alt.param(
-        name="TeamSelect_GD",
-        select=alt.SelectionPoint(fields=["team"], toggle=False)
-    )
+    TeamSelect_GD = alt.selection_point(fields=["team"], toggle=False)
 
     TeamFilter_GD = alt.param(
         name="TeamFilter_GD",
@@ -117,10 +111,7 @@ def chart_rolling(team_matches):
         value="goals_for_roll"
     )
 
-    TeamSelect_ROLL = alt.param(
-        name="TeamSelect_ROLL",
-        select=alt.SelectionPoint(fields=["team"], toggle=False)
-    )
+    TeamSelect_ROLL = alt.selection_point(fields=["team"], toggle=False)
 
     TeamFilter_ROLL = alt.param(
         name="TeamFilter_ROLL",
@@ -168,10 +159,7 @@ def chart_homeaway(homeaway_summary):
         value=seasons[0]
     )
 
-    TeamSelect_HA = alt.param(
-        name="TeamSelect_HA",
-        select=alt.SelectionPoint(fields=["team"], toggle=False)
-    )
+    TeamSelect_HA = alt.selection_point(fields=["team"], toggle=False)
 
     TeamFilter_HA = alt.param(
         name="TeamFilter_HA",
@@ -179,10 +167,7 @@ def chart_homeaway(homeaway_summary):
         value="All"
     )
 
-    Brush_HA = alt.param(
-        name="Brush_HA",
-        select=alt.SelectionInterval(encodings=["x", "y"])
-    )
+    Brush_HA = alt.selection_interval(encodings=["x", "y"])
 
     logic = (
         "(TeamFilter_HA != 'All') ? datum.team == TeamFilter_HA : "
